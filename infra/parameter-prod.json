@@ -1,0 +1,17 @@
+{
+  "Parameters": {
+    "LambdaTimeout": "14",
+    "LambdaMemorySize": "512",
+    "LambdaReservedConcurrency": "30",
+    "MinCapacity": "0",
+    "MaxCapacity": "5",
+    "ScaleInCooldown": "5",
+    "FunctionVPCSubnetId1": "subnet-1232lj1232",
+    "FunctionVPCSubnetId2": "subnet-1232lj1232",
+    "FunctionVPCSubnetId3": "subnet-1232lj1232",
+    "Environment": "prod",
+    "ApiGtw": "jj43jkj",
+
+    "ParamContextoClienteValue": "prod teste"
+  }
+}

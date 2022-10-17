@@ -1,0 +1,13 @@
+#Para realizar o processo de deleção da stack do CloudFormation vinculada a esta pepeline, altere o parâmetro abaixo para true conforme o ambiente.
+#A pipeline realizará uma execução para efetuar a exclusão da stack.
+#Após a deleção, para recriar a stack do CloudFormation, altere o parêmetro para false.
+#Para mais informações acesse: http://pi5.poages-gitlab.prod.cloud.ihf/docs/troubleshooting/remover_stack_cloudformation/
+
+#Habilitar deleção no Ambiente de Desenvolvimento
+delete_stack_dev=false
+
+#Habilitar deleção no ambiente de homologação
+delete_stack_hom=false
+
+#Habilitar deleção no ambiente de produção
+delete_stack_prod=false

@@ -1,0 +1,28 @@
+version: 0.2
+env:
+  shell: bash
+phases:
+  install:
+    runtime-versions:
+      dotnet: 3.1
+  build:
+    commands:
+      - echo "Instalando certificado xpto"
+      - aws s3api get-object --bucket 123456-cacertexemplo --key caexemplo.cer /usr/local/share/ca-certificates/caexemplo.crt
+      - update-ca-certificates -f
+      - whereis dotnet
+      - dotnet --version
+      - dotnet --info
+      - dotnet --list-sdks
+      - . $CODEBUILD_SRC_DIR_Libs/dotnet/configure-nuget.sh
+      - echo "Executando o testUnit"
+      - cd $CODEBUILD_SRC_DIR/app/src
+      - echo Clean started on 'date'
+      - dotnet clean
+      - echo Restore started on 'date'
+      - dotnet restore
+      - echo Test started on 'date'
+      - dotnet test --no-restore --logger:"trx" /p:CollectCoverage=true /p:CoverletOutuputFormat=opencover /p:Exclude=[xunit.*]*
+cache:
+  paths:
+    - '/root/.nuget/**/*'

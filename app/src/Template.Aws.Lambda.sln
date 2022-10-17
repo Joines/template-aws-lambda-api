@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{44173CFC-6FED-46E8-AD6A-E84227455C65}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{695B8D43-BBBC-48E7-8A92-2960AC83A75E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E12C801E-4754-4164-BF14-98D18C65E4AA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Aws.Lambda.Api", "main\Template.Aws.Lambda.Api\Template.Aws.Lambda.Api.csproj", "{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Aws.Lambda.Infrastructure", "main\Template.Aws.Lambda.Infrastructure\Template.Aws.Lambda.Infrastructure.csproj", "{27896F7F-FCA6-4FAE-9165-0B439849389D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Aws.Lambda.Application", "Template.Aws.Lambda.Application\Template.Aws.Lambda.Application.csproj", "{9ED51903-577D-46AE-9EFD-B27CF1FE30B7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Aws.Lambda.Domain", "Template.Aws.Lambda.Domain\Template.Aws.Lambda.Domain.csproj", "{3971C8C5-7C84-4C47-A17B-1EB79EDB130B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Aws.Lambda.ComponentsTests", "Template.Aws.Lambda.ComponentsTests\Template.Aws.Lambda.ComponentsTests.csproj", "{1969FD1D-4125-4809-A79C-98C46BFC74B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Aws.Lambda.IntegrationTests", "Template.Aws.Lambda.IntegrationTests\Template.Aws.Lambda.IntegrationTests.csproj", "{E930A835-8533-48AB-AAB7-AB67B92F8823}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Aws.Lambda.UnitTests", "Template.Aws.Lambda.UnitTests\Template.Aws.Lambda.UnitTests.csproj", "{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Aws.Lambda.Utils.Tests", "Template.Aws.Lambda.Utils.Tests\Template.Aws.Lambda.Utils.Tests.csproj", "{F4B6F610-07B4-48B0-A54C-FBD030103962}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27896F7F-FCA6-4FAE-9165-0B439849389D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27896F7F-FCA6-4FAE-9165-0B439849389D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27896F7F-FCA6-4FAE-9165-0B439849389D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27896F7F-FCA6-4FAE-9165-0B439849389D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9ED51903-577D-46AE-9EFD-B27CF1FE30B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9ED51903-577D-46AE-9EFD-B27CF1FE30B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9ED51903-577D-46AE-9EFD-B27CF1FE30B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9ED51903-577D-46AE-9EFD-B27CF1FE30B7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3971C8C5-7C84-4C47-A17B-1EB79EDB130B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3971C8C5-7C84-4C47-A17B-1EB79EDB130B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3971C8C5-7C84-4C47-A17B-1EB79EDB130B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3971C8C5-7C84-4C47-A17B-1EB79EDB130B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1969FD1D-4125-4809-A79C-98C46BFC74B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1969FD1D-4125-4809-A79C-98C46BFC74B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1969FD1D-4125-4809-A79C-98C46BFC74B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1969FD1D-4125-4809-A79C-98C46BFC74B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E930A835-8533-48AB-AAB7-AB67B92F8823}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E930A835-8533-48AB-AAB7-AB67B92F8823}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E930A835-8533-48AB-AAB7-AB67B92F8823}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E930A835-8533-48AB-AAB7-AB67B92F8823}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4B6F610-07B4-48B0-A54C-FBD030103962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4B6F610-07B4-48B0-A54C-FBD030103962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4B6F610-07B4-48B0-A54C-FBD030103962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4B6F610-07B4-48B0-A54C-FBD030103962}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ABA8F52A-E43A-4305-AAD2-ECFD7D71D046} = {44173CFC-6FED-46E8-AD6A-E84227455C65}
+		{27896F7F-FCA6-4FAE-9165-0B439849389D} = {44173CFC-6FED-46E8-AD6A-E84227455C65}
+		{9ED51903-577D-46AE-9EFD-B27CF1FE30B7} = {44173CFC-6FED-46E8-AD6A-E84227455C65}
+		{3971C8C5-7C84-4C47-A17B-1EB79EDB130B} = {44173CFC-6FED-46E8-AD6A-E84227455C65}
+		{1969FD1D-4125-4809-A79C-98C46BFC74B6} = {695B8D43-BBBC-48E7-8A92-2960AC83A75E}
+		{E930A835-8533-48AB-AAB7-AB67B92F8823} = {695B8D43-BBBC-48E7-8A92-2960AC83A75E}
+		{39FDC531-8F6D-4D37-9D42-BFB2B9248DE7} = {695B8D43-BBBC-48E7-8A92-2960AC83A75E}
+		{F4B6F610-07B4-48B0-A54C-FBD030103962} = {695B8D43-BBBC-48E7-8A92-2960AC83A75E}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6100A036-550F-4CAD-A4C0-D0E9638ED62D}
+	EndGlobalSection
+EndGlobal

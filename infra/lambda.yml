@@ -1,0 +1,201 @@
+AWSTemplateFormationVersion: '2022-09-24'
+Description: Launch a lambda using a pipeline app.
+
+Parameters:
+  LambdaName:
+    Description: Nome da funcao
+    Default: template-aws-lambda-api
+    Type: String
+  LambdaMemorySize:
+    Description: Memoria da funcao. Verifique o arquivo de parametros
+    Type: Number
+  LambdaTimout:
+    Description: Timeout para execucao da funcao. Verifique o arquivo de parametros
+    Type: Number
+  LambdaReservedConcurrency:
+    Description: Reserved concurrency da funcao. Verifique o arquivo de parametros
+    Type: Number
+  FunctionVPCSubnetId1:
+    Description: Id da subnet 1 para execucao dentro do VPC. Verifique o arquivo de parametros
+    Type: Number
+  FunctionVPCSubnetId2:
+    Description: Id da subnet 2 para execucao dentro do VPC. Verifique o arquivo de parametros
+    Type: Number
+  FunctionVPCSubnetId3:
+    Description: Id da subnet 3 para execucao dentro do VPC. Verifique o arquivo de parametros
+    Type: Number
+  FunctionTeamContactEmail:
+    Description: TAG necessária. Informar o endereço de email do time.
+    Default: joinesf@gmail.com
+    Type: String
+
+## Não alterar
+  CodUriBucket:
+    Description: Bucket onde o codigo da aplicação estara alocado. Valor informado automaticamente pela pipeline de lambda.
+    Type: String
+  CodeUriKey:
+    Description: Nome do artefato. Valor informado automaticamente pela pipeline de lambda.
+    Type: String
+##
+  FeatureName:
+    Description: Nome da feature. Verifique o arquivo de parametros teste
+    Type: String
+  MicroServiceName:
+    Description: Nome do micro servico. Verifique o arquivo de parametros
+    Type: String
+  Context:
+    Default: template-aws-lambda-api
+    Type: String
+  Environment:
+    Description: Variavel que define o ambiente
+    Type: String
+  ApiGtwBffId:
+    Description: Id do gateway de Bff. Verifique o arquivo de parametros
+    Type: String
+  FunctionRuntime:
+    Description: Runtime que irá ser utilizado na lambda
+    Default: "dotnetcore3.1"
+    Type: String
+    AllowedValues:
+      - "python3.7"
+      - "nodejs12.x"
+      - "dotnetcore3.1"
+      - "java8"
+      - "java11"
+  Alias:
+    Type: String
+    Description: Lambda alias
+    Default: "live"
+  MinCapacity:
+    Description: Scaling Min Capacity
+    Type: Number
+  MaxCapacity:
+    Description: Scaling max capacity
+    Type: Number
+  ScaleInCooldown:
+    Description: Scale in cool down
+    Type: Number
+  
+## SSM: Parameter ----------------------------------------------------------
+  ParamTier:
+    Type: String
+    Default: Standard
+  ParamType:
+    Type: String
+    Default: String
+## Inserir parametros específicos da aplicação. Aqui..
+## Parametro exemplo:
+  ParamContextoClienteName:
+    Type: String
+    Default: /Template.Aws.Lambda.Api/Paramter/Common/Contexto
+  ParamContextoClienteValue:
+    Type: String
+## -------------------------------------------------------------------------
+
+ Transform: AWS::Serverless-2022-09-24
+ Resources:
+   LambdaFunction:
+     Type: AWS::Serverless::Function
+     Properties:
+       FunctionName: !Ref LambdaName
+       Handler: template-aws-lambda-api::Template.Aws.Lambda.Api.LambdaEntryPoint::FunctionHanlderAsync
+       Role: '{{resolve:ssm:/Template.Aws.Lambda.Api/Parameter/Common/Lambda/Role}}'
+       MemorySize: !Ref LambdaMemorySize
+       Timeout: !Ref LambdaTimeout
+       ReservedConcurrentExecutions: !Ref LambdaReservedConcurrency
+       AutoPublishAlias: !Ref Alias
+       Tracing: Active
+       CodeUri:
+         Bucket: !Ref CodeUriBucket
+         Key: !Ref CodeUriKey
+       Runtime: !Ref FunctionRuntime
+       VpcConfig:
+         SecurityGroupsIds:
+           - '{{resolve:ssm:/Template.Aws.Lambda.Api/Parameter/Common/Lambda/SecurityGroup}}'
+         SubnetIds:
+           - !Ref FunctionVPCSubnetId1
+           - !Ref FunctionVPCSubnetId2
+           - !Ref FunctionVPCSubnetId3
+       KmsKeyArn: '{{resolve:ssm:/Template.Aws.Lambda.Api/Common/Lambda/LambdaKMSKeyArn}}'
+       Layers:
+         - '{{resolve:ssm:/Template.Aws.Lambda.Api/Common/Lambda/Layer}}'
+       Tags:
+         tech-team-emal: !Ref FunctionTeamContactEmail
+         squad: !Ref Context
+         Environment: !Ref Environment
+       Environment:
+         Variables:
+           ASPNETCORE_ENVIRONMENT: Production
+           DOTNET_SYSTEM_GLOBALIZATION_INVARIANT: false
+           AWS_LAMBDA_DOTNET_PREJIT: always
+           SSL_CERT_FILE: '{{resolve:ssm:/Template.Aws.Lambda.Api/Common/DotNet/Lambda/CertFile}}'
+
+   ScalingPolicyLambda:
+     Type: AWS::ApplicationAutoScaling::ScalingPolicy
+     Properties:
+       PolicyName: utilization
+       PolicyType: TargetTrackingScaling
+       ScalingTargetId: !Ref ScalableTargetLambda
+       TargetTrackingScalingPolicyConfiguration:
+         TargetValue: 0.70
+         ScaleInCooldown: !Ref ScaleInCooldown
+         PredefinedMetricSpecification:
+           PredefinedMetricType: LambdaProvisionedConcurrencyUtilization
+
+   LambdaApiGatewayInvoke:
+     Type: AWS::Lambda::Permission
+     Properties:
+       Action: lambda:InvokeFunction
+       FunctionName: !Sub "${LambdaFunction.Arn}:${Alias}"
+       Principal: apigateway.amazonaws.com
+       SourceArn: !Sub arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiGtwBffId}/*/ANY/apigtw-name/v1/api-template/{proxy+}
+     DependsOn: LambdaFunctionAliaslive
+      
+   CloudWatchLogGroup:
+     Type: AWS::Logs::LogGroup
+     Properties:
+       LogGroupName: !Sub "/aws/lambda/${LambdaName}"
+       RetentionInDays: 1
+
+     404MetricFilter:
+       Type: AWS::Logs::MetricFilter
+       Properties:
+         LogGroupName: !Sub "/aws/lambda/${LambdaName}"
+         FilterPattern: "[ip, identity, user_id, timestamp, request, status_code = 404, size, ...]"
+         MetricTransformations:
+         - MetricValue: '1'
+           MetricNamespace: !Sub "${FeatureName}-${MicroServiceName}/404s"
+           MetricName: !Sub "${FeatureName}-${MicroServiceName}/404Count"
+       DependsOn: CloudWatchLogGroup
+
+     404Alarm:
+       Type: AWS::CloudWatch::Alarm
+       Properties:
+         AlarmName: !Sub "Alarm-${FeatureName}-${MicroServiceName}-404s"
+         AlarmDescription: "Alarm description"
+         MetricName: !Sub "${FeatureName}-${MicroServiceName}/404Count"
+         Namespace: !Sub "${FeatureName}-${MicroServiceName}/404s"
+         Statistic: Sum
+         Period: '60'
+         EvaluationPeriods: '1'
+         Threshold: '1'
+         AlarmActions:
+          - '{{resolve:ssm:/org/member/workload_load_sns_arn:1}}'
+         OkActions:
+          - '{{resolve:ssm:/org/member/workload_load_sns_arn:1}}'
+         ComparisonOperator: GreaterThanThreshold
+         TreatMissingData: notBreaching
+       DependsOn: CloudWatchLogGroup
+     
+     ParameterContextoCliente:
+       Type: AWS::SSM::Parameter
+       Properties:
+         Name: !Ref ParamContextoClienteName
+         Description: !Join [" ", ["Parameter", !Ref ParamContextoClienteName]]
+         Value: !Ref ParamContextoClienteValue
+         Type: String
+         Tier: Standard
+         Tags:
+           Squad: !Ref Context
+           Environment: !Ref Environment
+

@@ -1,0 +1,31 @@
+version: 0.2
+phases:
+  install:
+    runtime-versions:
+      dotnet: 3.1
+  pre_build:
+    commands:
+      - dotnet --version
+  build:
+    commands:
+      - echo "Instalando certificado xpto"
+      - aws s3api get-object --bucket 123456-cacertexemplo --key caexemplo.cer /usr/local/share/ca-certificates/caexemplo.crt
+      - update-ca-certificates -f
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION > VERSION
+      - echo $CODEBUILD_RESOLVED_SOURCE_VERSION | head -c 8 > TAG
+      - echo "Iniciando build"
+      - echo $CODEBUILDE_RESOLVED_SOURCE_VERSION > app/VERSION
+      - export PATH=${PATH}:${HOME}/.dotnet/tools
+      - bash pipeline/build.sh
+  post_build:
+    commands:
+      - echo "Post Build"
+artifacts:
+    files:
+      - /builded/dlls/*
+      - app/VERSION
+      - TAG
+    discard-paths: yes
+cache:
+  paths:
+    - '/root/.nuget/**/*'
